@@ -1,10 +1,12 @@
+@import url(../../assets/css/shared-variables.css);
+
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
     width: 100%;
-    height: 80px;
+    height: var(--header-height);
     position: fixed;
     margin-top: 0;
     margin-left: 0;

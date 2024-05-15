@@ -1,4 +1,10 @@
+/* :root {
+    display: flex;
+    justify-content: center;
+} */
+
 .sign-in-container {
+    display: block;
     width: 80%;
     background: lightgray;
     padding: 20px;
