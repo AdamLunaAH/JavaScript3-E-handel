@@ -2,7 +2,7 @@
     display: flex;
 }
 
-.about-us-carousel img{
+.about-us-carousel img {
     width: 35rem;
 }
 
@@ -10,10 +10,26 @@
     text-align: left;
     width: 40rem;
     margin-right: 10rem;
-   
 }
 
 .about-us-text p {
     font-size: 1.1em;
     line-height: 1.6em;
+}
+
+@media screen and (max-width: 700px) {
+    .about-us {
+        flex-direction: column;
+    }
+
+    .about-us-text {
+        text-align: center;
+        margin: 0 auto;
+        width: 80vw;
+    }
+
+    .about-us-carousel {
+        margin: 0 auto;
+        width: 80vw;
+    }
 }
