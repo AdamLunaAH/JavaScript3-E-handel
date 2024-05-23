@@ -1,24 +1,26 @@
 footer {
     background-color: #1b0d0d;
     color: rgb(235, 225, 225);
-    bottom: 0;
-    left: 0;
-    right: 0;
+    /* bottom: 0; */    /* Changed */
+    /* left: 0; */  /* Changed */
+    /* right: 0; */ /* Changed */
     width: 100%;
-    position: fixed;
+    /* position: fixed; */  /* Changed */
+    position: relative; /* Changed */
     /* text-align: left; */
     font-weight: 200;
     display: flex;
     flex-direction: row;
     align-items: center;
     height: fit-content;
-    z-index: -1;
+    /* z-index: -1; */  /* Changed */
 }
 
 .footer-container-top,
 .footer-container-bottom {
     display: flex;
     flex-direction: row;
+    width: 100%;    /* Changed */
 }
 
 .footer-container-top {
@@ -27,12 +29,12 @@ footer {
     font-weight: 300;
     display: flex;
     flex-direction: row;
-    width: 50%;
+    /* width: 50%; */   /* Changed */
 }
 
 .footer-container-bottom {
     justify-content: center;
-    width: 50%;
+    /* width: 50%; */   /* Changed */
 }
 
 .footer-text {
@@ -56,20 +58,21 @@ footer {
 }
 
 footer img {
-    width: 3rem;
+    /* width: 3rem; */  /* Changed */
+    width: 5rem;    /* Changed */
     padding: 1rem;
     /* margin: 3rem 0 0 2rem; */
 }
 
-body, html {
-    
-    height: 100%;
-}
-
+/* body, html { */     /* Changed */
+/*  */  /* Changed */
+    /* height: 100%; */ /* Changed */
+/* } */ /* Changed */
 
 @media screen and (max-width: 550px) {
     footer {
-        flex-direction: row;
+        /* flex-direction: row; */  /* Changed */
+        flex-direction: column; /* Changed */
         text-align: center;
     }
 

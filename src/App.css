@@ -1,8 +1,15 @@
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
+    /* max-width: 1280px; */    /* Changed */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* margin: 0 auto; */ /* Changed */
     text-align: center;
 }
+
+main {  /* Changed */
+    flex: 1; /* Changed */
+}   /* Changed */
 
 .logo {
     height: 6em;
@@ -10,9 +17,11 @@
     will-change: filter;
     transition: filter 300ms;
 }
+
 .logo:hover {
     filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
     filter: drop-shadow(0 0 2em #61dafbaa);
 }
