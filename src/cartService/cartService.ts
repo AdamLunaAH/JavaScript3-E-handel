@@ -1,108 +1,57 @@
-import { db } from '../.././src/main';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { handleError } from '../utils/errorHandler';
-interface CartItem {
-    productId: string;
-    productName: string;
-    quantity: number;
-    productPrice: number;
+// cartService.ts
+import { CartItem, Product } from '../interface/types';
+
+const CART_KEY = 'shoppingCart';
+
+export function addItemToCart(product: Product) {
+    const cartItems: CartItem[] = getCartItems();
+    const existingItem = cartItems.find(
+        (item) => item.productId === product.id
+    );
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cartItems.push({
+            productId: product.id,
+            productName: product.name,
+            productPrice: product.price,
+            quantity: 1,
+        });
+    }
+
+    localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
 }
 
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    imageUrl: string;
+export function getCartItems(): CartItem[] {
+    const cartItems = localStorage.getItem(CART_KEY);
+    return cartItems ? JSON.parse(cartItems) : [];
 }
-export async function addItemToCart(productId: string) {
-    try {
-        const productRef = doc(db, 'products', productId);
-        const productSnap = await getDoc(productRef);
 
-        if (productSnap.exists()) {
-            const productData = productSnap.data() as Product;
-            const cartItem: CartItem = {
-                productId: productId,
-                productName: productData.name,
-                productPrice: productData.price,
-                quantity: 1,
-            };
+export function updateCartItemQuantity(productId: string, quantity: number) {
+    const cartItems: CartItem[] = getCartItems();
+    const itemIndex = cartItems.findIndex(
+        (item) => item.productId === productId
+    );
 
-            const cartRef = doc(db, 'cart', 'defaultCart');
-            const cartSnap = await getDoc(cartRef);
-
-            if (cartSnap.exists()) {
-                const cartData = cartSnap.data();
-                const existingItem = cartData.items.find(
-                    (item: CartItem) => item.productId === productId
-                );
-
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                    await setDoc(cartRef, cartData);
-                } else {
-                    await updateDoc(cartRef, {
-                        items: arrayUnion(cartItem),
-                    });
-                }
-            } else {
-                await setDoc(cartRef, { items: [cartItem] });
-            }
+    if (itemIndex !== -1) {
+        if (quantity === 0) {
+            cartItems.splice(itemIndex, 1);
+        } else {
+            cartItems[itemIndex].quantity = quantity;
         }
-    } catch (error) {
-        handleError(error);
+        localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
     }
 }
 
-export async function getCartItems(): Promise<CartItem[]> {
-    const cartRef = doc(db, 'cart', 'defaultCart');
-    const cartSnap = await getDoc(cartRef);
-    if (cartSnap.exists()) {
-        const cartData = cartSnap.data();
-        return cartData.items;
-    }
-    return [];
+export function removeCartItem(productId: string) {
+    const cartItems: CartItem[] = getCartItems();
+    const updatedItems = cartItems.filter(
+        (item) => item.productId !== productId
+    );
+    localStorage.setItem(CART_KEY, JSON.stringify(updatedItems));
 }
 
-export async function updateCartItemQuantity(
-    productId: string,
-    quantity: number
-) {
-    try {
-        const cartRef = doc(db, 'cart', 'defaultCart');
-        const cartSnap = await getDoc(cartRef);
-
-        if (cartSnap.exists()) {
-            const cartData = cartSnap.data();
-            const itemIndex = cartData.items.findIndex(
-                (item: CartItem) => item.productId === productId
-            );
-
-            if (itemIndex !== -1) {
-                cartData.items[itemIndex].quantity = quantity;
-                await setDoc(cartRef, cartData);
-            }
-        }
-    } catch (error) {
-        handleError(error);
-    }
-}
-
-export async function removeCartItem(productId: string) {
-    try {
-        const cartRef = doc(db, 'cart', 'defaultCart');
-        const cartSnap = await getDoc(cartRef);
-
-        if (cartSnap.exists()) {
-            const cartData = cartSnap.data();
-            const updatedItems = cartData.items.filter(
-                (item: CartItem) => item.productId !== productId
-            );
-
-            await setDoc(cartRef, { items: updatedItems });
-        }
-    } catch (error) {
-        handleError(error);
-    }
+export function clearCart() {
+    localStorage.removeItem(CART_KEY);
 }

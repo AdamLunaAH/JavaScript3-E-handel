@@ -1,3 +1,4 @@
+// CartItem.tsx
 import React from 'react';
 import styles from './CartItem.module.css';
 import {
@@ -5,34 +6,26 @@ import {
     removeCartItem,
     getCartItems,
 } from '../../cartService/cartService';
-
-interface CartItem {
-    productId: string;
-    productName: string;
-    quantity: number;
-    productPrice: number;
-}
+import { CartItem as CartItemType } from '../../interface/types';
 
 interface CartItemProps {
-    item: CartItem;
-    updateCart: (items: CartItem[]) => void;
+    item: CartItemType;
+    updateCart: () => void;
 }
 
 const CartItem: React.FC<CartItemProps> = ({ item, updateCart }) => {
     const increaseQuantity = async () => {
-        await updateCartItemQuantity(item.productId, item.quantity + 1);
-        const updatedItems = await getCartItems();
-        updateCart(updatedItems);
+        updateCartItemQuantity(item.productId, item.quantity + 1);
+        updateCart();
     };
 
     const decreaseQuantity = async () => {
         if (item.quantity > 1) {
-            await updateCartItemQuantity(item.productId, item.quantity - 1);
+            updateCartItemQuantity(item.productId, item.quantity - 1);
         } else {
-            await removeCartItem(item.productId);
+            removeCartItem(item.productId);
         }
-        const updatedItems = await getCartItems();
-        updateCart(updatedItems);
+        updateCart();
     };
 
     return (

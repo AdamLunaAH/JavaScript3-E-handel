@@ -5,18 +5,17 @@ import { db } from '../../main';
 import { doc, getDoc } from 'firebase/firestore';
 import styles from './ProductDetail.module.css';
 
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    imageUrl: string;
-    quantity: number;
-}
+import {
+    addItemToCart,
+    updateCartItemQuantity,
+    getCartItems,
+} from '../../cartService/cartService';
+import { Product, CartItem } from '../../interface/types';
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<Product | null>(null);;
+    const [cartItems, setCartItems] = useState<CartItem[]>(getCartItems());
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -42,9 +41,34 @@ const ProductDetail: React.FC = () => {
         return <p>Loading...</p>;
     }
 
-    const addToCart = (productId: string) => {
-        // Placeholder function to simulate adding product to cart
-        console.log(`Added product with ID ${productId} to cart`);
+    const handleAddToCart = (product: Product) => {
+        addItemToCart(product);
+        setCartItems(getCartItems());
+    };
+
+    const increaseQuantity = (product: Product) => {
+        const cartItem = cartItems.find(
+            (item) => item.productId === product.id
+        );
+        if (cartItem) {
+            updateCartItemQuantity(product.id, cartItem.quantity + 1);
+        } else {
+            addItemToCart(product);
+        }
+        setCartItems(getCartItems());
+    };
+
+    const decreaseQuantity = (productId: string) => {
+        const cartItem = cartItems.find((item) => item.productId === productId);
+        if (cartItem) {
+            updateCartItemQuantity(productId, cartItem.quantity - 1);
+            setCartItems(getCartItems());
+        }
+    };
+
+    const getCartQuantity = (productId: string): number => {
+        const cartItem = cartItems.find((item) => item.productId === productId);
+        return cartItem ? cartItem.quantity : 0;
     };
 
     return (
@@ -59,14 +83,19 @@ const ProductDetail: React.FC = () => {
                 <p>{product.description}</p>
                 {product.quantity > 0 ? (
                     <div>
-                        <button onClick={() => addToCart(product.id)}>
+                        <button onClick={() => handleAddToCart(product)}>
                             Add to Cart
                         </button>
-                        {/* Add +/- buttons for quantity control */}
                         <div>
-                            <button>-</button>
-                            <span>1</span>
-                            <button>+</button>
+                            <button
+                                onClick={() => decreaseQuantity(product.id)}
+                            >
+                                -
+                            </button>
+                            <span>{getCartQuantity(product.id)}</span>
+                            <button onClick={() => increaseQuantity(product)}>
+                                +
+                            </button>
                         </div>
                     </div>
                 ) : (

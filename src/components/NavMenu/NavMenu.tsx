@@ -107,6 +107,11 @@ const NavMenu: React.FC = () => {
                                 </ul>
                             )}
                         </li>
+                        <li>
+                            <Link to="/cart" onClick={toggleMenu}>
+                                Cart
+                            </Link>
+                        </li>
                     </ul>
                 )}
             </nav>

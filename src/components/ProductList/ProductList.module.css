@@ -2,7 +2,8 @@
 
 .product-list-page {
     margin-top: 100px;
-    display: inline;
+
+    /* display: inline; */
 }
 
 .products-list-div {
@@ -12,6 +13,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     grid-gap: 1rem;
+
+    /* Add padding/margin for larger screens */
+    margin: 0 auto;
+    max-width: 1600px; /* Optional: Set a max width for the container */
 }
 
 .product-list-item {
@@ -19,11 +24,16 @@
     height: auto;
     max-width: 400px;
     min-width:200px */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers the content horizontally */
+    padding: 1rem; /* Optional: Add padding for better spacing */
+    border: 2px solid white;
 }
 
-.products-list-div ul {
+/* .products-list-div ul {
     list-style: none;
-}
+} */
 
 .product-image {
     width: auto;
@@ -32,4 +42,12 @@
     min-width: 100px;
     display: block;
     margin-top: 10px;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+    .products-list-div {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }

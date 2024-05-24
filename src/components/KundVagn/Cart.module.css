@@ -1,0 +1,29 @@
+/* Cart.module.css */
+
+.cart-page {
+    width: 100%;
+    max-width: 800px; /* Limiting width for larger screens */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cart-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .cart-item {
+        padding: 5px;
+    }
+}
+
+.cart-page button {
+    margin-top: 2rem;
+}
+
+.checkout-button {
+    padding: 1rem 2rem;
+    border: 2px solid white;
+}

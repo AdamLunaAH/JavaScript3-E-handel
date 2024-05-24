@@ -17,6 +17,8 @@ import AdminPanel from '../../views/admin/AdminPanel/AdminPanel';
 import ProtectedRoute from '../ProtectedRoutes/ProtectedRoutes';
 import ProfileManager from '../../views/admin/ProfileManager/ProfileManager';
 
+import CartPage from '../../views/pages/CartPage';
+
 const Main: React.FC = () => {
     return (
         <main>
@@ -32,6 +34,7 @@ const Main: React.FC = () => {
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/user-profile" element={<UserProfile />} />
                 <Route path="/change-password" element={<ChangePassword />} />
+                <Route path='/cart' element={<CartPage/>} />
                 <Route
                     path="/admin-panel"
                     element={
